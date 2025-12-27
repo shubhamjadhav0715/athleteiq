@@ -17,10 +17,11 @@ exports.createTrainingPlan = async (req, res) => {
       success: true,
       data: plan
     });
-  } catch (error) {
+  } catch (err) {
+    console.log(err);
     res.status(500).json({
       success: false,
-      message: error.message
+      message: err.message
     });
   }
 };
@@ -61,10 +62,10 @@ exports.getPlan = async (req, res) => {
       success: true,
       data: plan
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Could not fetch plan'
     });
   }
 };
@@ -129,11 +130,8 @@ exports.deletePlan = async (req, res) => {
       success: true,
       message: 'Training plan deleted successfully'
     });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: error.message
-    });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 
@@ -176,10 +174,10 @@ exports.getAthleteProgress = async (req, res) => {
         performance
       }
     });
-  } catch (error) {
+  } catch (e) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to fetch athlete progress'
     });
   }
 };
