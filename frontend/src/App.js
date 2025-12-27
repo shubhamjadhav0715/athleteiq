@@ -3,17 +3,14 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Context
 import { AuthProvider } from './context/AuthContext';
 
-// Pages
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/Admin/Dashboard';
 import CoachDashboard from './pages/Coach/Dashboard';
 import AthleteDashboard from './pages/Athlete/Dashboard';
 
-// Components
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {
