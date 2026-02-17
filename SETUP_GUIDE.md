@@ -1,4 +1,4 @@
-# 🚀 Setup Guide - Smart Coaching & Training Planner
+# 🚀 Setup Guide - AthleteIQ
 
 ## Prerequisites
 
@@ -12,8 +12,8 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/shubhamjadhav0715/smart-coaching-training-planner.git
-cd smart-coaching-training-planner
+git clone https://github.com/shubhamjadhav0715/athleteiq.git
+cd athleteiq
 ```
 
 ### 2. Backend Setup
@@ -29,7 +29,7 @@ Create `.env` file in the `backend` folder:
 
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/smart-coaching
+MONGODB_URI=mongodb://localhost:27017/athleteiq
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 JWT_EXPIRE=7d
 NODE_ENV=development
@@ -51,316 +51,348 @@ FRONTEND_URL=http://localhost:3000
 
 ### 4. Create Admin User
 
-Run the admin seeder script:
-
 ```bash
-npm run seed:admin
+# Make sure you're in the backend folder
+node seedAdmin.js
 ```
 
-**Default Admin Credentials:**
+You should see:
 ```
-Email: admin@smartcoaching.com
+✅ Admin user created successfully!
+Email: admin@athleteiq.com
 Password: admin123
-Role: admin
 ```
-
-⚠️ **IMPORTANT:** Change the password after first login!
 
 ### 5. Start Backend Server
 
 ```bash
-# Development mode with auto-reload
-npm run dev
-
-# Production mode
 npm start
+# or for development with auto-reload
+npm run dev
 ```
 
-Server will run on: `http://localhost:5000`
+Backend will run on: http://localhost:5000
+
+---
 
 ### 6. Frontend Setup
 
-Open a new terminal:
+Open a **new terminal** window:
 
 ```bash
 cd frontend
 npm install
+```
+
+### 7. Start Frontend
+
+```bash
 npm start
 ```
 
-Frontend will run on: `http://localhost:3000`
+Frontend will run on: http://localhost:3000
 
 ---
 
-## 👥 Default User Accounts
+## 🔐 Default Credentials
 
 ### Admin Account
 ```
-Email: admin@smartcoaching.com
+Email: admin@athleteiq.com
 Password: admin123
 ```
 
-**Admin Capabilities:**
-- Manage all users (coaches and athletes)
-- View system statistics
-- Update/delete any user
-- Monitor platform activity
-
-### Creating Coach Account
-
-**Option 1: Via Admin Dashboard**
-1. Login as admin
-2. Go to Users Management
-3. Create new user with role "coach"
-
-**Option 2: Via API**
-```bash
-POST http://localhost:5000/api/auth/register
-Content-Type: application/json
-
-{
-  "name": "John Coach",
-  "email": "coach@example.com",
-  "password": "coach123",
-  "role": "coach",
-  "phone": "1234567890"
-}
-```
-
-### Creating Athlete Account
-
-**Option 1: Via Registration Page**
-1. Go to `http://localhost:3000/register`
-2. Fill in details
-3. Select role: "athlete"
-
-**Option 2: Via API**
-```bash
-POST http://localhost:5000/api/auth/register
-Content-Type: application/json
-
-{
-  "name": "Jane Athlete",
-  "email": "athlete@example.com",
-  "password": "athlete123",
-  "role": "athlete",
-  "sportsCategory": "Football",
-  "dateOfBirth": "1995-01-01",
-  "gender": "female"
-}
-```
+⚠️ **IMPORTANT:** Change the password after first login!
 
 ---
 
-## 🧪 Testing the Application
+## 🧪 Testing the Setup
 
-### 1. Test Admin Login
-```bash
-POST http://localhost:5000/api/auth/login
-Content-Type: application/json
+### 1. Check Backend Health
+Open browser and go to:
+```
+http://localhost:5000/api/health
+```
 
+You should see:
+```json
 {
-  "email": "admin@smartcoaching.com",
-  "password": "admin123"
+  "success": true,
+  "message": "AthleteIQ API is running",
+  "version": "1.0.0",
+  "timestamp": "2026-..."
 }
 ```
 
-### 2. Get System Stats (Admin Only)
-```bash
-GET http://localhost:5000/api/admin/stats
-Authorization: Bearer <admin_token>
+### 2. Access Frontend
+Open browser and go to:
+```
+http://localhost:3000
 ```
 
-### 3. Create Training Plan (Coach)
-```bash
-POST http://localhost:5000/api/coach/plans
-Authorization: Bearer <coach_token>
-Content-Type: application/json
+You should see the AthleteIQ login page.
 
-{
-  "title": "Beginner Strength Program",
-  "description": "4-week strength building program",
-  "category": "strength",
-  "duration": {
-    "weeks": 4,
-    "sessionsPerWeek": 3
-  },
-  "startDate": "2024-01-01",
-  "endDate": "2024-01-28",
-  "athleteIds": ["<athlete_id>"],
-  "status": "active"
-}
-```
+### 3. Login as Admin
+- Email: `admin@athleteiq.com`
+- Password: `admin123`
 
 ---
 
 ## 📁 Project Structure
 
 ```
-smart-coaching-training-planner/
+athleteiq/
 ├── backend/
-│   ├── config/
-│   │   └── db.js                 # MongoDB connection
 │   ├── controllers/
-│   │   ├── adminController.js    # Admin operations
-│   │   ├── athleteController.js  # Athlete operations
-│   │   ├── authController.js     # Authentication
-│   │   └── coachController.js    # Coach operations
-│   ├── middleware/
-│   │   ├── auth.js               # JWT authentication
-│   │   └── roleCheck.js          # Role-based access
+│   │   ├── authController.js
+│   │   ├── adminController.js
+│   │   ├── coachController.js
+│   │   └── athleteController.js
 │   ├── models/
-│   │   ├── User.js               # User model
-│   │   ├── TrainingPlan.js       # Training plan model
-│   │   ├── Workout.js            # Workout model
-│   │   ├── Performance.js        # Performance metrics
-│   │   ├── Feedback.js           # Feedback model
-│   │   └── Injury.js             # Injury tracking
+│   │   ├── User.js
+│   │   ├── TrainingPlan.js
+│   │   ├── Workout.js
+│   │   ├── Performance.js
+│   │   ├── Feedback.js
+│   │   └── Injury.js
 │   ├── routes/
-│   │   ├── admin.js              # Admin routes
-│   │   ├── athlete.js            # Athlete routes
-│   │   ├── auth.js               # Auth routes
-│   │   └── coach.js              # Coach routes
+│   │   ├── authRoutes.js
+│   │   ├── adminRoutes.js
+│   │   ├── coachRoutes.js
+│   │   └── athleteRoutes.js
+│   ├── middleware/
+│   │   ├── auth.js
+│   │   └── validation.js
 │   ├── utils/
-│   │   ├── emailService.js       # Email notifications
-│   │   └── pdfService.js         # PDF report generation
-│   ├── .env.example              # Environment template
-│   ├── package.json
-│   ├── seedAdmin.js              # Admin seeder
-│   └── server.js                 # Entry point
+│   │   ├── emailService.js
+│   │   └── pdfService.js
+│   ├── server.js
+│   ├── seedAdmin.js
+│   └── package.json
+│
 ├── frontend/
 │   ├── public/
+│   │   └── index.html
 │   ├── src/
-│   │   ├── components/
-│   │   ├── context/
 │   │   ├── pages/
-│   │   │   ├── Admin/
-│   │   │   ├── Athlete/
-│   │   │   ├── Coach/
 │   │   │   ├── Login.js
-│   │   │   └── Register.js
+│   │   │   ├── Register.js
+│   │   │   ├── Admin/
+│   │   │   │   └── Dashboard.js
+│   │   │   ├── Coach/
+│   │   │   │   └── Dashboard.js
+│   │   │   └── Athlete/
+│   │   │       └── Dashboard.js
+│   │   ├── context/
+│   │   │   └── AuthContext.js
 │   │   ├── utils/
+│   │   │   └── api.js
 │   │   ├── App.js
 │   │   └── index.js
 │   └── package.json
-├── API_DOCUMENTATION.md          # Complete API reference
-├── BUGFIXES.md                   # Bug fixes documentation
-├── README.md                     # Project overview
-└── SETUP_GUIDE.md               # This file
+│
+└── Documentation files
 ```
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 MongoDB Setup
 
-### MongoDB Connection Error
+### Option 1: Local MongoDB
+
+1. **Install MongoDB:**
+   - Windows: https://www.mongodb.com/try/download/community
+   - Mac: `brew install mongodb-community`
+   - Linux: `sudo apt-get install mongodb`
+
+2. **Start MongoDB:**
+   - Windows: `net start MongoDB`
+   - Mac: `brew services start mongodb-community`
+   - Linux: `sudo systemctl start mongod`
+
+3. **Verify MongoDB is running:**
+   ```bash
+   mongosh
+   ```
+
+### Option 2: MongoDB Atlas (Cloud)
+
+1. Go to https://www.mongodb.com/cloud/atlas
+2. Create free account
+3. Create a cluster
+4. Get connection string
+5. Update `.env` file:
+   ```env
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/athleteiq
+   ```
+
+---
+
+## 🚀 Running in Production
+
+### Backend
+
+1. Set environment to production:
+```env
+NODE_ENV=production
 ```
-Error: connect ECONNREFUSED 127.0.0.1:27017
+
+2. Use PM2 for process management:
+```bash
+npm install -g pm2
+pm2 start server.js --name athleteiq-backend
 ```
 
-**Solution:**
-1. Make sure MongoDB is running: `mongod`
-2. Or use MongoDB Atlas cloud database
-3. Update `MONGODB_URI` in `.env`
+### Frontend
 
-### Port Already in Use
-```
-Error: listen EADDRINUSE: address already in use :::5000
+1. Build the frontend:
+```bash
+cd frontend
+npm run build
 ```
 
-**Solution:**
-1. Kill the process: `lsof -ti:5000 | xargs kill -9`
-2. Or change PORT in `.env`
-
-### JWT Secret Error
-```
-Error: secretOrPrivateKey must have a value
+2. Serve the build folder using nginx or serve:
+```bash
+npm install -g serve
+serve -s build -l 3000
 ```
 
-**Solution:**
-Add `JWT_SECRET` to your `.env` file
+---
 
-### Email Not Sending
-**Solution:**
-1. Check email credentials in `.env`
-2. For Gmail, use App Password (not regular password)
-3. Email features are optional - app works without them
+## 🔒 Security Checklist
+
+- [ ] Change default admin password
+- [ ] Update JWT_SECRET to a strong random string
+- [ ] Enable HTTPS in production
+- [ ] Set up CORS properly for production domain
+- [ ] Use environment variables for all secrets
+- [ ] Enable MongoDB authentication
+- [ ] Set up rate limiting
+- [ ] Enable helmet.js for security headers
+- [ ] Regular security updates
 
 ---
 
 ## 📊 Database Collections
 
-After running the app, MongoDB will have these collections:
+After running the application, MongoDB will have these collections:
 
-- `users` - All users (admin, coaches, athletes)
-- `trainingplans` - Training programs
-- `workouts` - Logged workout sessions
-- `performances` - Performance metrics
-- `feedbacks` - Athlete-coach feedback
-- `injuries` - Injury tracking records
+1. **users** - All users (admin, coaches, athletes)
+2. **trainingplans** - Training programs created by coaches
+3. **workouts** - Logged workout sessions by athletes
+4. **performances** - Performance metrics and analytics
+5. **feedbacks** - Athlete-coach communication
+6. **injuries** - Injury tracking and recovery
 
 ---
 
-## 🎯 Quick Start Workflow
+## 🐛 Troubleshooting
 
-1. **Start MongoDB**
-   ```bash
-   mongod
-   ```
+### Backend won't start
 
-2. **Start Backend** (Terminal 1)
-   ```bash
-   cd backend
-   npm run dev
-   ```
+**Problem:** Port 5000 already in use
+```bash
+# Find process using port 5000
+# Windows:
+netstat -ano | findstr :5000
+taskkill /PID <PID> /F
 
-3. **Start Frontend** (Terminal 2)
-   ```bash
-   cd frontend
-   npm start
-   ```
+# Mac/Linux:
+lsof -ti:5000 | xargs kill -9
+```
 
-4. **Create Admin** (Terminal 3)
-   ```bash
-   cd backend
-   npm run seed:admin
-   ```
+### MongoDB connection failed
 
-5. **Login**
-   - Go to `http://localhost:3000`
-   - Email: `admin@smartcoaching.com`
-   - Password: `admin123`
+**Problem:** MongoDB not running
+```bash
+# Windows
+net start MongoDB
+
+# Mac
+brew services start mongodb-community
+
+# Linux
+sudo systemctl start mongod
+```
+
+### Frontend won't start
+
+**Problem:** Port 3000 already in use
+- React will ask if you want to use another port
+- Type `Y` and it will use port 3001
+
+### npm install fails
+
+**Solution:**
+```bash
+# Clear npm cache
+npm cache clean --force
+
+# Delete node_modules and package-lock.json
+rm -rf node_modules package-lock.json
+
+# Install again
+npm install
+```
 
 ---
 
 ## 📚 Additional Resources
 
+- **Quick Start:** See `QUICK_START.md`
 - **API Documentation:** See `API_DOCUMENTATION.md`
 - **Bug Fixes:** See `BUGFIXES.md`
-- **Main README:** See `README.md`
+- **Branding Guide:** See `BRANDING.md`
 
 ---
 
-## 🆘 Need Help?
+## 🎯 Next Steps
 
-If you encounter any issues:
+After successful setup:
 
-1. Check the console for error messages
-2. Verify all environment variables are set
-3. Ensure MongoDB is running
-4. Check if ports 3000 and 5000 are available
-5. Review the API documentation for correct request formats
+1. **Login as Admin**
+   - Email: admin@athleteiq.com
+   - Password: admin123
+
+2. **Create Coach Account**
+   - Register as coach
+   - Admin can manage coaches
+
+3. **Create Athlete Account**
+   - Register as athlete
+   - Assign to coach
+
+4. **Create Training Plan**
+   - Login as coach
+   - Create new training plan
+   - Assign to athletes
+
+5. **Log Workouts**
+   - Login as athlete
+   - Log daily workouts
+   - Track progress
 
 ---
 
-## 🎉 You're All Set!
+## 💡 Tips
 
-Your Smart Coaching & Training Planner is now ready to use!
+- Use **Chrome DevTools** for debugging
+- Check **browser console** for frontend errors
+- Check **terminal** for backend errors
+- Use **MongoDB Compass** to view database
+- Enable **React DevTools** extension
 
-**Next Steps:**
-1. Login as admin
-2. Create coach accounts
-3. Create athlete accounts
-4. Assign athletes to coaches
-5. Create training plans
-6. Start tracking progress!
+---
+
+## 📞 Support
+
+For issues or questions:
+- Check documentation files
+- Review API_DOCUMENTATION.md
+- See QUICK_START.md for common tasks
+
+---
+
+**© 2026 AthleteIQ - Smart Coaching Platform**
+
+**Happy Coding! 🚀**
