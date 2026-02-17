@@ -2,6 +2,8 @@ const TrainingPlan = require('../models/TrainingPlan');
 const Workout = require('../models/Workout');
 const Performance = require('../models/Performance');
 const Feedback = require('../models/Feedback');
+const User = require('../models/User');
+const { generateTrainingReport } = require('../utils/pdfService');
 
 exports.getMyTrainingPlans = async (req, res) => {
   try {
@@ -184,6 +186,86 @@ exports.getMyFeedback = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Could not fetch feedback'
+    });
+  }
+};
+
+exports.getMyAnalytics = async (req, res) => {
+  try {
+    const athleteId = req.user.id;
+    
+    const totalWorkouts = await Workout.countDocuments({ athleteId });
+    const workouts = await Workout.find({ athleteId }).sort('-date').limit(30);
+    const performance = await Performance.find({ athleteId }).sort('-date').limit(10);
+    
+    const totalDuration = workouts.reduce((sum, w) => sum + (w.totalDuration || 0), 0);
+    const totalCalories = workouts.reduce((sum, w) => sum + (w.caloriesBurned || 0), 0);
+    const avgDifficulty = workouts.length > 0 
+      ? workouts.reduce((sum, w) => sum + (w.difficultyRating || 0), 0) / workouts.length 
+      : 0;
+    const avgFatigue = workouts.length > 0
+      ? workouts.reduce((sum, w) => sum + (w.fatigueLevel || 0), 0) / workouts.length
+      : 0;
+
+    const workoutsByCategory = await Workout.aggregate([
+      { $match: { athleteId: req.user._id } },
+      { $lookup: { from: 'trainingplans', localField: 'trainingPlanId', foreignField: '_id', as: 'plan' } },
+      { $unwind: '$plan' },
+      { $group: { _id: '$plan.category', count: { $sum: 1 } } }
+    ]);
+
+    const last7Days = workouts.slice(0, 7).reverse().map(w => ({
+      date: new Date(w.date).toLocaleDateString(),
+      duration: w.totalDuration,
+      calories: w.caloriesBurned,
+      difficulty: w.difficultyRating
+    }));
+
+    res.status(200).json({
+      success: true,
+      data: {
+        summary: {
+          totalWorkouts,
+          totalDuration: Math.round(totalDuration / 60),
+          totalCalories,
+          avgDifficulty: avgDifficulty.toFixed(1),
+          avgFatigue: avgFatigue.toFixed(1)
+        },
+        workoutsByCategory,
+        last7Days,
+        recentPerformance: performance.slice(0, 5)
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+exports.downloadReport = async (req, res) => {
+  try {
+    const athleteData = await User.findById(req.user.id);
+    const workouts = await Workout.find({ athleteId: req.user.id }).sort('-date').limit(50);
+    const performance = await Performance.find({ athleteId: req.user.id }).sort('-date').limit(10);
+
+    const result = await generateTrainingReport(athleteData, workouts, performance);
+
+    if (result.success) {
+      res.download(result.filePath, result.fileName, (err) => {
+        if (err) {
+          console.error('Download error:', err);
+          res.status(500).json({ success: false, message: 'Error downloading file' });
+        }
+      });
+    } else {
+      res.status(500).json({ success: false, message: 'Failed to generate report' });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
     });
   }
 };
