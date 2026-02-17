@@ -8,7 +8,9 @@ const {
   logPerformance,
   getMyPerformance,
   submitFeedback,
-  getMyFeedback
+  getMyFeedback,
+  getMyAnalytics,
+  downloadReport
 } = require('../controllers/athleteController');
 const { protect } = require('../middleware/auth');
 const { authorize } = require('../middleware/roleCheck');
@@ -31,5 +33,8 @@ router.route('/performance')
 router.route('/feedback')
   .post(submitFeedback)
   .get(getMyFeedback);
+
+router.get('/analytics', getMyAnalytics);
+router.get('/report/download', downloadReport);
 
 module.exports = router;
