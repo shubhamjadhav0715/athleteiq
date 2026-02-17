@@ -15,10 +15,10 @@ exports.sendTrainingReminder = async (athleteEmail, athleteName, trainingDetails
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: athleteEmail,
-      subject: 'Training Reminder - Smart Coaching',
+      subject: 'Training Reminder - AthleteIQ',
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Training Reminder</h2>
+          <h2 style="color: #2563eb;">Training Reminder</h2>
           <p>Hi ${athleteName},</p>
           <p>This is a reminder about your upcoming training session:</p>
           <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 20px 0;">
@@ -28,7 +28,9 @@ exports.sendTrainingReminder = async (athleteEmail, athleteName, trainingDetails
             <p><strong>Description:</strong> ${trainingDetails.description}</p>
           </div>
           <p>Stay focused and give your best!</p>
-          <p>Best regards,<br>Smart Coaching Team</p>
+          <p>Best regards,<br><strong>AthleteIQ Team</strong></p>
+          <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+          <p style="font-size: 12px; color: #666;">AthleteIQ - Smart Coaching Platform</p>
         </div>
       `
     };
@@ -47,10 +49,10 @@ exports.sendPlanAssignment = async (athleteEmail, athleteName, planDetails) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: athleteEmail,
-      subject: 'New Training Plan Assigned - Smart Coaching',
+      subject: 'New Training Plan Assigned - AthleteIQ',
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>New Training Plan Assigned</h2>
+          <h2 style="color: #2563eb;">New Training Plan Assigned</h2>
           <p>Hi ${athleteName},</p>
           <p>Your coach has assigned you a new training plan:</p>
           <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 20px 0;">
@@ -61,8 +63,10 @@ exports.sendPlanAssignment = async (athleteEmail, athleteName, planDetails) => {
             <p><strong>Start Date:</strong> ${new Date(planDetails.startDate).toLocaleDateString()}</p>
             <p><strong>Description:</strong> ${planDetails.description}</p>
           </div>
-          <p>Login to your dashboard to view the complete plan and start your training!</p>
-          <p>Best regards,<br>Smart Coaching Team</p>
+          <p>Login to your AthleteIQ dashboard to view the complete plan and start your training!</p>
+          <p>Best regards,<br><strong>AthleteIQ Team</strong></p>
+          <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+          <p style="font-size: 12px; color: #666;">AthleteIQ - Smart Coaching Platform</p>
         </div>
       `
     };
@@ -81,10 +85,10 @@ exports.sendFeedbackResponse = async (athleteEmail, athleteName, feedbackRespons
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: athleteEmail,
-      subject: 'Coach Response to Your Feedback - Smart Coaching',
+      subject: 'Coach Response to Your Feedback - AthleteIQ',
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Coach Response</h2>
+          <h2 style="color: #2563eb;">Coach Response</h2>
           <p>Hi ${athleteName},</p>
           <p>Your coach has responded to your feedback:</p>
           <div style="background-color: #f4f4f4; padding: 15px; border-radius: 5px; margin: 20px 0;">
@@ -92,7 +96,9 @@ exports.sendFeedbackResponse = async (athleteEmail, athleteName, feedbackRespons
             <p><strong>Coach Response:</strong> ${feedbackResponse.response}</p>
           </div>
           <p>Keep up the great work!</p>
-          <p>Best regards,<br>Smart Coaching Team</p>
+          <p>Best regards,<br><strong>AthleteIQ Team</strong></p>
+          <hr style="margin-top: 30px; border: none; border-top: 1px solid #ddd;">
+          <p style="font-size: 12px; color: #666;">AthleteIQ - Smart Coaching Platform</p>
         </div>
       `
     };
