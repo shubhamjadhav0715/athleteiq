@@ -44,7 +44,7 @@ const Register = () => {
     const result = await register(registerData);
     
     if (result.success) {
-      toast.success('Registration successful!');
+      toast.success('Welcome to AthleteIQ!');
       navigate(`/${result.user.role}`);
     } else {
       toast.error(result.message);
@@ -57,11 +57,14 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-2xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+          <h2 className="mt-6 text-center text-4xl font-extrabold text-blue-600">
+            AthleteIQ
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Join Smart Coaching & Training
+          <p className="mt-2 text-center text-sm text-gray-600 font-medium">
+            Smart Coaching Platform
+          </p>
+          <p className="mt-4 text-center text-lg text-gray-700">
+            Create your account
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -162,6 +165,12 @@ const Register = () => {
             </Link>
           </div>
         </form>
+        
+        <div className="mt-6 text-center">
+          <p className="text-xs text-gray-500">
+            © 2024 AthleteIQ. All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
   );
