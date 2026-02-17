@@ -146,7 +146,7 @@ const AdminDashboard = () => {
         
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
-            © 2024 AthleteIQ - Smart Coaching Platform
+            © 2026 AthleteIQ - Smart Coaching Platform
           </p>
         </div>
       </div>
